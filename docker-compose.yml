@@ -10,7 +10,7 @@ services:
       context: ./.docker
       dockerfile: Dockerfile
     image: laravelapp
-    container_name: laravelapp-app
+    container_name: laravelapp-app1
     restart: unless-stopped
     working_dir: /var/www/
     volumes:
@@ -22,13 +22,13 @@ services:
   #Service MySQL
   db:
     image: mysql:5.7
-    container_name: laravelapp-db
+    container_name: laravelapp-db1
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: 'lara_db'
       MYSQL_ROOT_PASSWORD: 'root'
-      MYSQL_PASSWORD: 'lara_password'
-      MYSQL_USER: 'lara_user'
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
     volumes:
       - ./db/mysql:/var/lib/mysql
       - ./.docker/mysql/my.cnf:/etc/mysql/my.cnf
@@ -38,7 +38,7 @@ services:
   #Service Nginx
   nginx:
     image: nginx:1.17-alpine
-    container_name: laravelapp-nginx
+    container_name: laravelapp-nginx1
     restart: unless-stopped
     ports:
       - 8008:80

@@ -1,6 +1,6 @@
 # Pagamento Simplificado
 
-API Restfull para realizar transações de pagamento.
+API Restful para realizar transações de pagamento.
 
 #### Tecnologias Utilizadas
 
