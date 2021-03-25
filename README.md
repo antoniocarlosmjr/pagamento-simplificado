@@ -24,6 +24,8 @@ criar os volumes, configurar e conectar as redes:
 Logo após, execute `docker-compose exec app php artisan key:generate` para gerar uma chave que será copiada para o arquivo `.env` do projeto do Laravel
 para garantir que as sessões do usuário e os dados permaneçam seguros.
 
+Por fim, execute o comando `docker-compose exec app php artisan migrate` para executar as migrações.
+
 Pronto, agora podemos executar a aplicação que poderá ser acessada através do `http://localhost:8008/`.
 
 Obs.: Caso queira visualizar o ambiente de configuração do Docker, [clique aqui](https://github.com/antoniocarlosmjr/ambiente-docker-php).
