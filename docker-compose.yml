@@ -25,7 +25,7 @@ services:
     container_name: laravelapp-db1
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: 'lara_db'
+      MYSQL_DATABASE: 'pagamento_simplificado_db'
       MYSQL_ROOT_PASSWORD: 'root'
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
