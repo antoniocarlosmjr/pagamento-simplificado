@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Class CreateUsuariosTable
- * @author Antonio Martins antonioc@construtordevendas.com.br
+ * @author Antonio Martins
  */
 class CreateUsuariosTable extends Migration
 {
@@ -14,7 +14,7 @@ class CreateUsuariosTable extends Migration
      * Executa as migrations.
      *
      * @return void
-     * @author Antonio Martins antonioc@construtordevendas.com.br
+     * @author Antonio Martins
      *
      */
     public function up()
@@ -35,7 +35,7 @@ class CreateUsuariosTable extends Migration
      * Reverte as migrations.
      *
      * @return void
-     * @author Antonio Martins antonioc@construtordevendas.com.br
+     * @author Antonio Martins
      *
      */
     public function down()

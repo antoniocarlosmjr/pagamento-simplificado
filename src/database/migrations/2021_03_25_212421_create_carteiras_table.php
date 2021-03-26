@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Class CreateCarteirasTable
- * @author Antonio Martins antonioc@construtordevendas.com.br
+ * @author Antonio Martins
  */
 class CreateCarteirasTable extends Migration
 {
@@ -14,7 +14,7 @@ class CreateCarteirasTable extends Migration
      * Executa as migrations.
      *
      * @return void
-     * @author Antonio Martins antonioc@construtordevendas.com.br
+     * @author Antonio Martins
      *
      */
     public function up()
@@ -38,7 +38,7 @@ class CreateCarteirasTable extends Migration
      * Reverte as migrations.
      *
      * @return void
-     * @author Antonio Martins antonioc@construtordevendas.com.br
+     * @author Antonio Martins
      *
      */
     public function down()

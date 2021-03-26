@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Class CreateTransacoesTable
- * @author Antonio Martins antonioc@construtordevendas.com.br
+ * @author Antonio Martins
  */
 class CreateTransacoesTable extends Migration
 {
@@ -14,7 +14,7 @@ class CreateTransacoesTable extends Migration
      * Executa as migrations.
      *
      * @return void
-     * @author Antonio Martins antonioc@construtordevendas.com.br
+     * @author Antonio Martins
      *
      */
     public function up()
@@ -46,7 +46,7 @@ class CreateTransacoesTable extends Migration
      * Reverte as migrations.
      *
      * @return void
-     * @author Antonio Martins antonioc@construtordevendas.com.br
+     * @author Antonio Martins
      *
      */
     public function down()
