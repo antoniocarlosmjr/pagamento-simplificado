@@ -13,7 +13,20 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+/** @var Route $router */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+$router->post('usuario', 'UsuarioController@criarUsuario');
+$router->post('autenticacao', 'AuthController@login');
+
+$router->group(['middleware' => 'api'], function() use ($router) {
+    $router->group(['prefix' => 'carteira'], function () use ($router) {
+        $router->get('', 'CarteiraController@index');
+    });
+
+    $router->group(['prefix' => 'transacoes'], function () use ($router) {
+        $router->get('', 'TransacaoController@index');
+        $router->get('{id}', 'TransacaoController@show');
+        $router->post('', 'TransacaoController@realizarTransferencia');
+    });
 });
+
