@@ -1,0 +1,45 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+/**
+ * Class CreateUsuariosTable
+ * @author Antonio Martins antonioc@construtordevendas.com.br
+ */
+class CreateUsuariosTable extends Migration
+{
+    /**
+     * Executa as migrations.
+     *
+     * @return void
+     * @author Antonio Martins antonioc@construtordevendas.com.br
+     *
+     */
+    public function up()
+    {
+        Schema::create('usuarios', function (Blueprint $table) {
+            $table->id();
+            $table->string('nome', 150);
+            $table->string('email', 100)->unique();
+            $table->string('senha');
+            $table->string('cpf_cnpj', 14)->unique();
+            $table->enum('tipo', ['comum', 'lojista']);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * Reverte as migrations.
+     *
+     * @return void
+     * @author Antonio Martins antonioc@construtordevendas.com.br
+     *
+     */
+    public function down()
+    {
+        Schema::dropIfExists('usuarios');
+    }
+}
