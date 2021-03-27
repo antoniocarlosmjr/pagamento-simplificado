@@ -70,7 +70,6 @@ class TransacaoController extends GenericoController
             );
         } catch (Throwable $error) {
             DB::rollBack();
-            echo $error->getMessage();
             return response()->json(
                 [
                     'message' => "Erro ao tentar realizar transferência",
