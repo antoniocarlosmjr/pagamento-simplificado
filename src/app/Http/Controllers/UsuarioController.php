@@ -42,7 +42,7 @@ class UsuarioController extends GenericoController
             $request->validate($this->model->regras(), $this->model->mensagens());
             $dataForm = $request->all();
 
-            $dataForm['senha'] = bcrypt($dataForm['senha']);
+            $dataForm['password'] = bcrypt($dataForm['password']);
             $usuarioModelObj = $this->model->create($dataForm);
 
             $carteiraModelObj = new Carteira();
@@ -55,6 +55,7 @@ class UsuarioController extends GenericoController
                 JsonResponse::HTTP_CREATED
             );
         } catch (Throwable $error){
+            echo $error->getMessage();
             return response()->json(
                 [
                     'message' => "Erro ao cadastrar usuário",

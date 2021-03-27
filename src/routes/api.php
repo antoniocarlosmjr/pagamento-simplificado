@@ -18,16 +18,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function() {
     Route::post('usuario', 'UsuarioController@cadastrar');
     Route::post('login', 'AuthController@login');
 
-    Route::group(['middleware' => 'apiJwt'], function() {
-        Route::group(['prefix' => 'carteira'], function() {
-            Route::get('', 'CarteiraController@index');
-        });
-
-        Route::group(['prefix' => 'transacoes'], function() {
-            Route::get('', 'TransacaoController@index');
-            Route::get('', 'TransacaoController@show');
-            Route::get('', 'TransacaoController@realizarTransferencia');
-        });
+    Route::group(['middleware' => ['apiJwt']], function() {
+        Route::get('carteira', 'CarteiraController@index');
+        Route::post('transacao', 'TransacaoController@realizarTransferencia');
     });
 });
 

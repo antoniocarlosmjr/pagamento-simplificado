@@ -19,11 +19,11 @@ class CreateUsuariosTable extends Migration
      */
     public function up()
     {
-        Schema::create('usuarios', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('nome', 150);
             $table->string('email', 100)->unique();
-            $table->string('senha');
+            $table->string('password');
             $table->string('cpf_cnpj', 14)->unique();
             $table->enum('tipo', ['comum', 'lojista']);
             $table->timestamps();
@@ -40,6 +40,6 @@ class CreateUsuariosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('usuarios');
+        Schema::dropIfExists('users');
     }
 }
