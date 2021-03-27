@@ -2,16 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Carteira;
 
 /**
  * Class CarteiraController
  * @package App\Http\Controllers
  * @author Antonio Martins
  */
-class CarteiraController extends Controller
+class CarteiraController extends GenericoController
 {
+    protected $model;
 
+    /**
+     * CarteiraController constructor.
+     * @param Carteira $carteiraModel
+     */
+    public function __construct(Carteira $carteiraModel)
+    {
+        $this->model = $carteiraModel;
+    }
 }
