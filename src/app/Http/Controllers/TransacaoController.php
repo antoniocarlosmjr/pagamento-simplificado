@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\TransacaoException;
 use App\Models\Transacao;
 use App\Models\User;
+use App\Events\TransferenciaRecebida;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -43,7 +44,6 @@ class TransacaoController extends GenericoController
 
             $usuarioPagadorModel = User::find($request->id_usuario_pagador);
             $usuarioBeneficiarioModel = User::find($request->id_usuario_beneficiario);
-
             $this->model->setAttribute('valor', (float) $request->valor);
 
             $this->model = $this->model->transferencia(
@@ -53,6 +53,8 @@ class TransacaoController extends GenericoController
             );
 
             $this->model->create($request->all());
+
+            event(new TransferenciaRecebida($usuarioBeneficiarioModel));
 
             DB::commit();
 

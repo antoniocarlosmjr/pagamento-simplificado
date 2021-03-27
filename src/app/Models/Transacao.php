@@ -6,9 +6,10 @@ use App\Constantes\SituacoesTransacaoConstante;
 use App\Exceptions\TransacaoException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
+use TransferenciaRecebida;
 
 /**
  * Class Transacao
@@ -18,6 +19,7 @@ use Illuminate\Validation\Rule;
 class Transacao extends Model
 {
     use HasFactory;
+    const URL_AUTORIZACAO_TRANSACAO = 'https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6';
 
     protected $table = "transacoes";
     protected $fillable = [
@@ -126,7 +128,7 @@ class Transacao extends Model
      */
     public function autorizarTransacao(): bool
     {
-        $resposta = Http::get('https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6');
+        $resposta = Http::get(self::URL_AUTORIZACAO_TRANSACAO);
         return $resposta->ok();
     }
 }
