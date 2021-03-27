@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\Rule;
 
 /**
  * Class Carteira
@@ -17,10 +18,49 @@ class Carteira extends Model
 {
     use HasFactory;
 
+    const VALOR_INICIAL_CARTEIRA = 0;
+
     protected $fillable = [
         'id_usuario',
         'saldo'
     ];
+
+    private $saldo;
+
+    /**
+     * Retorna um array com regras para a carteira do usuário.
+     *
+     * @return array
+     * @author Antonio Martins
+     */
+    public function regras(): array
+    {
+        return [
+            'id_usuario' => [
+                'required',
+                'numeric',
+                Rule::exists('users', 'id')
+            ],
+            'saldo' => 'required|numeric|min:0|not_in:0'
+        ];
+    }
+
+    /**
+     * Retorna um array com as mensagens padrões da transação.
+     *
+     * @return array
+     * @author Antonio Martins
+     */
+    public function mensagens(): array
+    {
+        return [
+            'id_usuario.required' => 'Id do usuário pagador é obrigatório.',
+            'id_usuario.exists' => 'Id do usuário é inexistente na base de dados.',
+            'id_usuario.numeric' => 'Id do usuário deve ser um número.',
+            'saldo.required' => "O saldo é obrigatório.",
+            'saldo.not_in' => 'O saldo deve ser maior que zero.',
+        ];
+    }
 
     /**
      * Realiza a criação de uma carteira de um usuário.
@@ -33,15 +73,52 @@ class Carteira extends Model
     public function criarCarteiraUsuario(User $usuarioModel): Carteira
     {
         try {
-            $form['id_usuario'] =  $usuarioModel->id;
-            $form['saldo'] =  0;
+            $dados['id_usuario'] =  $usuarioModel->id;
+            $dados['saldo'] =  self::VALOR_INICIAL_CARTEIRA;
 
-            return $this->create($form);
+            return $this->create($dados);
         } catch (Exception $e) {
             throw new CarteiraException(
                 'Erro ao tentar cadastrar a reserva',
                 JsonResponse::HTTP_UNPROCESSABLE_ENTITY
             );
         }
+    }
+
+    /**
+     * Adiciona um determinado valor na carteira do usuário.
+     *
+     * @param float $valor
+     * @return void
+     * @author Antonio Martins
+     */
+    public function adicionarValor(float $valor): void
+    {
+        $this->setAttribute('saldo', $this->getAttribute('saldo') + $valor);
+    }
+
+    /**
+     * Diminui um determinado valor na carteira do usuário.
+     *
+     * @param float $valor
+     * @return void
+     * @author Antonio Martins
+     */
+    public function diminuirValor(float $valor): void
+    {
+        $this->setAttribute('saldo', $this->getAttribute('saldo') - $valor);
+    }
+
+    /**
+     * Retorna se uma determinada carteira possui pelo menos um valor maior ou igual a um
+     * valor definido no parâmetro.
+     *
+     * @param float $valor
+     * @return bool
+     * @author Antonio Martins
+     */
+    public function carteiraPossuiValorSuficiente(float $valor): bool
+    {
+        return $this->getAttribute('saldo') >= $valor;
     }
 }

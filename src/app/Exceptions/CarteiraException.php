@@ -20,7 +20,7 @@ class CarteiraException extends Exception
      * @param Throwable|null $previous
      */
     public function __construct(
-        string $message = 'Erro ao consultar carteira',
+        string $message = 'Erro ao realizar ação em carteira',
         int $code = JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
         Throwable $previous = null
     ) {
