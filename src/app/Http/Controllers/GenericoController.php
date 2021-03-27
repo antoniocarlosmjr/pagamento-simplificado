@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Throwable;
 
 /**
  * Class GenericoController
@@ -86,7 +87,7 @@ abstract class GenericoController extends BaseController
                     JsonResponse::HTTP_NOT_FOUND);
             }
 
-            $this->validate($request, $this->model->regras());
+            $request->validate($this->model->regras(), $this->model->mensagens());
 
             $dataForm = $request->all();
             $data->update($dataForm);
@@ -94,9 +95,12 @@ abstract class GenericoController extends BaseController
             return response()->json(
                 ['success' => 'Atualizado com sucesso!'],
                 JsonResponse::HTTP_OK);
-        } catch (Exception $e) {
+        } catch (Throwable $error) {
             return response()->json(
-                ['error' => 'Erro ao tentar atualizar'],
+                [
+                    'error' => 'Erro ao tentar atualizar',
+                    'errors' => $error->errors()
+                ],
                 JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
