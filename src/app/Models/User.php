@@ -88,9 +88,8 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Retorna o identificaodor do usuário do JWT.
      *
-     * @return mixed|void
+     * @return mixed
      * @author Antonio Martins
-     *
      */
     public function getJWTIdentifier()
     {
@@ -104,8 +103,31 @@ class User extends Authenticatable implements JWTSubject
      * @author Antonio Martins
      *
      */
-    public function getJWTCustomClaims()
+    public function getJWTCustomClaims(): array
     {
         return [];
+    }
+
+    /**
+     * Retorna se o usuário é do tipo lojista.
+     *
+     * @return bool
+     * @author Antonio Martins
+     */
+    public function usuarioLojista(): bool
+    {
+        return $this->getAttribute('tipo') == TiposUsuariosConstante::USUARIO_LOJISTA;
+    }
+
+    /**
+     * Retorna a carteira de um determinado usuário.
+     *
+     * @return Carteira
+     * @author Antonio Martins
+     *
+     */
+    public function getCarteira(): Carteira
+    {
+        return Carteira::where('id_usuario', '=', $this->id)->first();
     }
 }

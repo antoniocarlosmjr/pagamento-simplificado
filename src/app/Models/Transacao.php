@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Constantes\TiposUsuariosConstante;
+use App\Exceptions\TransacaoException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rule;
+use phpDocumentor\Reflection\DocBlock\Tags\Throws;
+use Throwable;
 
 /**
  * Class Transacao
@@ -35,7 +38,7 @@ class Transacao extends Model
             'id_usuario_pagador' => [
                 'required',
                 'numeric',
-                Rule::exists('users', 'id')->whereNot('tipo', TiposUsuariosConstante::USUARIO_LOJISTA),
+                Rule::exists('users', 'id')
             ],
             'id_usuario_beneficiario' => [
                 'required',
@@ -56,7 +59,7 @@ class Transacao extends Model
     {
         return [
             'id_usuario_pagador.required' => 'Id do usuário pagador é obrigatório.',
-            'id_usuario_pagador.exists' => 'Usuário pagador não deve ser lojista ou é inexistente na base de dados.',
+            'id_usuario_pagador.exists' => 'Usuário pagador é inexistente na base de dados.',
             'id_usuario_pagador.numeric' => 'Id do usuário pagador deve ser um número.',
             'id_usuario_beneficiario.required' => 'Id do usuário beneficiário é obrigatório.',
             'id_usuario_beneficiario.exists' => 'Id do usuário beneficiário inexistente na base de dados.',
@@ -64,5 +67,44 @@ class Transacao extends Model
             'valor.required' => "O valor da transferência é obrigatório.",
             'valor.not_in' => 'O valor da transferência deve ser maior que zero.',
         ];
+    }
+
+    /**
+     * Realiza a transferência entre dois usuários passados por parâmetro, sendo que o usuário pagador
+     * é o usuário que está realizando a transferência para um usuário beneficiário. Além disso, também é passado
+     * um determinado valor para a transação.
+     *
+     * @param User $usuarioPagador
+     * @param User $usuarioBeneficiario
+     * @param Transacao $transacaoModel
+     * @return void
+     * @throws TransacaoException
+     * @author Antonio Martins
+     */
+    public function transferencia(
+        User $usuarioPagador,
+        User $usuarioBeneficiario,
+        Transacao $transacaoModel
+    ): void {
+        if ($usuarioPagador->usuarioLojista()) {
+            throw new TransacaoException("Lojistas não podem realizar transferência.");
+        }
+
+        if ($usuarioPagador->getAttribute('id') == $usuarioBeneficiario->getAttribute('id')) {
+            throw new TransacaoException("Usuário não pode transferir para ele mesmo.");
+        }
+
+        $carteiraUsuarioPagadorObj = $usuarioPagador->getCarteira();
+        $carteiraUsuarioBeneficiarioObj = $usuarioBeneficiario->getCarteira();
+
+        if (!$carteiraUsuarioPagadorObj->carteiraPossuiValorSuficiente($transacaoModel->valor)) {
+            throw new TransacaoException("Saldo na carteira do usuário pagador é insuficiente.");
+        }
+
+        $carteiraUsuarioPagadorObj->diminuirValor($transacaoModel->valor);
+        $carteiraUsuarioBeneficiarioObj->adicionarValor($transacaoModel->valor);
+
+        $carteiraUsuarioPagadorObj->save();
+        $carteiraUsuarioBeneficiarioObj->save();
     }
 }
