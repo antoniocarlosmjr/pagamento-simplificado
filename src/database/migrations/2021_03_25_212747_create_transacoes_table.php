@@ -23,7 +23,7 @@ class CreateTransacoesTable extends Migration
             $table->id();
             $table->decimal('valor', 6, 2, true);
             $table->bigInteger('id_usuario_pagador')->unsigned();
-            $table->enum('situacao', ['finalizada', 'pendente', 'cancelada', 'nao-autorizada']);
+            $table->enum('situacao', ['finalizada', 'pendente', 'cancelada']);
             $table->foreign('id_usuario_pagador')
                 ->references('id')
                 ->on('users')

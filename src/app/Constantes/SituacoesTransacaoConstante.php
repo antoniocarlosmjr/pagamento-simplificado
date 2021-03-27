@@ -12,7 +12,6 @@ class SituacoesTransacaoConstante implements ConstanteInterface
     const FINALIZADA = 'finalizada';
     const PENDENTE = 'pendente';
     const CANCELADA = 'cancelada';
-    const NAO_AUTORIZADA = 'nao-autorizada';
 
     /**
      * Retorna as constantes definidas para as situações das transações.
@@ -27,7 +26,6 @@ class SituacoesTransacaoConstante implements ConstanteInterface
             'FINALIZADA' => ['id' => self::FINALIZADA, 'value' => "Finalizada"],
             'PENDENTE' => ['id' => self::PENDENTE, 'value' => "Pendente"],
             'CANCELADA' => ['id' => self::CANCELADA, 'value' => "Cancelada"],
-            'NAO_AUTORIZADA' => ['id' => self::NAO_AUTORIZADA, 'value' => "Não Autorizada"],
         ];
     }
 
