@@ -39,6 +39,7 @@ class UsuarioController extends GenericoController
         try {
             DB::beginTransaction();
 
+            $this->model->setAttribute('tipo', $request->tipo);
             $request->validate($this->model->regras(), $this->model->mensagens());
             $dataForm = $request->all();
 

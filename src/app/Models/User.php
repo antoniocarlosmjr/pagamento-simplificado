@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Constantes\TiposUsuariosConstante;
+use App\Utils\FullnameRule;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -40,8 +41,8 @@ class User extends Authenticatable implements JWTSubject
      */
     public function regras(): array
     {
-        return [
-            'nome' => 'required',
+        $regras =  [
+            'nome' => ['required'],
             'email' => [
                 'required',
                 'email',
@@ -58,6 +59,12 @@ class User extends Authenticatable implements JWTSubject
                 Rule::in(TiposUsuariosConstante::USUARIO_COMUM, TiposUsuariosConstante::USUARIO_LOJISTA)
             ],
         ];
+
+        if ($this->usuarioComum()){
+            $regras['nome'][] = new FullnameRule();
+        }
+
+        return $regras;
     }
 
     /**
@@ -117,6 +124,17 @@ class User extends Authenticatable implements JWTSubject
     public function usuarioLojista(): bool
     {
         return $this->getAttribute('tipo') == TiposUsuariosConstante::USUARIO_LOJISTA;
+    }
+
+    /**
+     * Retorna se o usuário é do tipo comum.
+     *
+     * @return bool
+     * @author Antonio Martins
+     */
+    public function usuarioComum(): bool
+    {
+        return $this->getAttribute('tipo') == TiposUsuariosConstante::USUARIO_COMUM;
     }
 
     /**
