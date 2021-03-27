@@ -21,6 +21,8 @@ class User extends Authenticatable implements JWTSubject
     use HasFactory;
     use SoftDeletes;
 
+    protected $table = "users";
+    protected $hidden = ['password'];
     protected $fillable = [
         'nome',
         'email',
@@ -28,8 +30,6 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'tipo'
     ];
-    protected $table = "users";
-    protected $hidden = ['password'];
 
     /**
      * Retorna um array de regras dos campos utilizados para cadastrar um usuário.

@@ -20,12 +20,11 @@ class Carteira extends Model
 
     const VALOR_INICIAL_CARTEIRA = 0;
 
+    protected $table = "carteiras";
     protected $fillable = [
         'id_usuario',
         'saldo'
     ];
-
-    private $saldo;
 
     /**
      * Retorna um array com regras para a carteira do usuário.

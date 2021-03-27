@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Constantes\TiposUsuariosConstante;
 use App\Exceptions\TransacaoException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +18,7 @@ class Transacao extends Model
 {
     use HasFactory;
 
+    protected $table = "transacoes";
     protected $fillable = [
         'id_usuario_pagador',
         'id_usuario_beneficiario',

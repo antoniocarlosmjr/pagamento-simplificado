@@ -52,6 +52,8 @@ class TransacaoController extends GenericoController
                 $this->model
             );
 
+            // falta definir a situação da transação
+
             $this->model->create($request->all());
 
             DB::commit();
