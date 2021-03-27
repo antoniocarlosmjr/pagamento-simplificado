@@ -11,11 +11,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
- * Class Usuario
+ * Class User
  * @package App\Models
  * @author Antonio Martins
  */
-class Usuario extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
     use HasFactory;
@@ -28,7 +28,7 @@ class Usuario extends Authenticatable implements JWTSubject
         'password',
         'tipo'
     ];
-
+    protected $table = "users";
     protected $hidden = ['password'];
 
     /**
@@ -45,12 +45,12 @@ class Usuario extends Authenticatable implements JWTSubject
             'email' => [
                 'required',
                 'email',
-                Rule::unique('users', 'email')->ignore('id_usuario')
+                Rule::unique('users', 'email')->ignore('id')
             ],
             'cpf_cnpj' => [
                 'required',
                 'cpf_ou_cnpj',
-                Rule::unique('users', 'cpf_cnpj')->ignore('id_usuario')
+                Rule::unique('users', 'cpf_cnpj')->ignore('id')
             ],
             'password' => 'required|min:8|max:20',
             'tipo' => [

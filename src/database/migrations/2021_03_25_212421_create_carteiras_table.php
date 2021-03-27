@@ -25,7 +25,7 @@ class CreateCarteirasTable extends Migration
             $table->bigInteger('id_usuario')->unsigned();
             $table->foreign('id_usuario')
                 ->references('id')
-                ->on('usuarios')
+                ->on('users')
                 ->onUpdate('CASCADE')
                 ->onDelete('NO ACTION');
 

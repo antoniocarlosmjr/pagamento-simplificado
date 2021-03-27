@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Validator;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class AuthController
@@ -35,7 +36,7 @@ class AuthController extends Controller
             );
         }
 
-        if (!$token = auth()->attempt($validator->validated())) {
+        if (!$token = auth('api')->attempt($validator->validated())) {
             return response()->json(
                 ['error' => 'Não Autorizado'],
                 JsonResponse::HTTP_UNAUTHORIZED
@@ -57,7 +58,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth('api')->factory()->getTTL() * 60
         ]);
     }
 }

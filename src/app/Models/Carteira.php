@@ -25,12 +25,12 @@ class Carteira extends Model
     /**
      * Realiza a criação de uma carteira de um usuário.
      *
-     * @param Usuario $usuarioModel
+     * @param User $usuarioModel
      * @return Carteira
      * @throws CarteiraException
      * @author Antonio Martins
      */
-    public function criarCarteiraUsuario(Usuario $usuarioModel): Carteira
+    public function criarCarteiraUsuario(User $usuarioModel): Carteira
     {
         try {
             $form['id_usuario'] =  $usuarioModel->id;

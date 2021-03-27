@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Carteira;
-use App\Models\Usuario;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,9 +20,9 @@ class UsuarioController extends GenericoController
 
     /**
      * UsuarioController constructor.
-     * @param Usuario $usuarioModel
+     * @param User $usuarioModel
      */
-    public function __construct(Usuario $usuarioModel)
+    public function __construct(User $usuarioModel)
     {
         $this->model = $usuarioModel;
     }
@@ -42,7 +42,7 @@ class UsuarioController extends GenericoController
             $request->validate($this->model->regras(), $this->model->mensagens());
             $dataForm = $request->all();
 
-            $dataForm['password'] = bcrypt($dataForm['password']);
+            $dataForm['password'] = bcrypt($request->password);
             $usuarioModelObj = $this->model->create($dataForm);
 
             $carteiraModelObj = new Carteira();
@@ -55,7 +55,7 @@ class UsuarioController extends GenericoController
                 JsonResponse::HTTP_CREATED
             );
         } catch (Throwable $error){
-            echo $error->getMessage();
+            DB::rollBack();
             return response()->json(
                 [
                     'message' => "Erro ao cadastrar usuário",

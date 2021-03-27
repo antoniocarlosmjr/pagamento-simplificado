@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Models\Usuario;
+use App\Models\User;
 
 /**
  * Class CarteiraController

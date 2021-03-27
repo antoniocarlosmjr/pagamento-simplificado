@@ -26,14 +26,14 @@ class CreateTransacoesTable extends Migration
             $table->enum('situacao', ['finalizada', 'pendente', 'cancelada', 'nao-autorizada']);
             $table->foreign('id_usuario_pagador')
                 ->references('id')
-                ->on('usuarios')
+                ->on('users')
                 ->onUpdate('CASCADE')
                 ->onDelete('NO ACTION');
 
             $table->bigInteger('id_usuario_beneficiario')->unsigned();
             $table->foreign('id_usuario_beneficiario')
                 ->references('id')
-                ->on('usuarios')
+                ->on('users')
                 ->onUpdate('CASCADE')
                 ->onDelete('NO ACTION');
 
