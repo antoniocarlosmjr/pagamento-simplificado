@@ -46,13 +46,11 @@ class TransacaoController extends GenericoController
 
             $this->model->setAttribute('valor', (float) $request->valor);
 
-            $this->model->transferencia(
+            $this->model = $this->model->transferencia(
                 $usuarioPagadorModel,
                 $usuarioBeneficiarioModel,
                 $this->model
             );
-
-            // falta definir a situação da transação
 
             $this->model->create($request->all());
 

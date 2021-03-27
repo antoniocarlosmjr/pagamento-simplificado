@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Constantes\SituacoesTransacaoConstante;
 use App\Exceptions\TransacaoException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
-use phpDocumentor\Reflection\DocBlock\Tags\Throws;
-use Throwable;
 
 /**
  * Class Transacao
@@ -77,7 +78,7 @@ class Transacao extends Model
      * @param User $usuarioPagador
      * @param User $usuarioBeneficiario
      * @param Transacao $transacaoModel
-     * @return void
+     * @return Transacao
      * @throws TransacaoException
      * @author Antonio Martins
      */
@@ -85,7 +86,7 @@ class Transacao extends Model
         User $usuarioPagador,
         User $usuarioBeneficiario,
         Transacao $transacaoModel
-    ): void {
+    ): Transacao {
         if ($usuarioPagador->usuarioLojista()) {
             throw new TransacaoException("Lojistas não podem realizar transferência.");
         }
@@ -101,10 +102,31 @@ class Transacao extends Model
             throw new TransacaoException("Saldo na carteira do usuário pagador é insuficiente.");
         }
 
+        if (!$this->autorizarTransacao()) {
+            throw new TransacaoException("Transferência não autorizada.");
+        }
+
         $carteiraUsuarioPagadorObj->diminuirValor($transacaoModel->valor);
         $carteiraUsuarioBeneficiarioObj->adicionarValor($transacaoModel->valor);
 
         $carteiraUsuarioPagadorObj->save();
         $carteiraUsuarioBeneficiarioObj->save();
+
+        $transacaoModel->setAttribute('situacao', SituacoesTransacaoConstante::FINALIZADA);
+
+        return $transacaoModel;
+    }
+
+    /**
+     * Retorna um boolean que representa se a transação está autorizada
+     * por um serviço externo.
+     *
+     * @return bool
+     * @author Antonio Martins
+     */
+    public function autorizarTransacao(): bool
+    {
+        $resposta = Http::get('https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6');
+        return $resposta->ok();
     }
 }
