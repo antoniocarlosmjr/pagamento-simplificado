@@ -42,7 +42,9 @@ abstract class GenericoController extends BaseController
 
             return response()->json($dados);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Erro interno'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(
+                ['error' => 'Erro interno'],
+                JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -66,7 +68,7 @@ abstract class GenericoController extends BaseController
         } catch (Exception $e) {
             return response()->json(
                 ['error' => 'Erro ao retornar por id'],
-                JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+                JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -101,7 +103,7 @@ abstract class GenericoController extends BaseController
                     'error' => 'Erro ao tentar atualizar',
                     'errors' => $error->errors()
                 ],
-                JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+                JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -124,7 +126,7 @@ abstract class GenericoController extends BaseController
         } catch (Exception $e) {
             return response()->json(
                 ['error' => 'Erro ao tentar deletar'],
-                JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+                JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 
