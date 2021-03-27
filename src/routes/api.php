@@ -13,20 +13,22 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-/** @var Route $router */
 
-$router->post('usuario', 'UsuarioController@criarUsuario');
-$router->post('autenticacao', 'AuthController@login');
+Route::group(['namespace' => 'App\Http\Controllers'], function() {
+    Route::post('usuario', 'UsuarioController@cadastrar');
+    Route::post('login', 'AuthController@login');
 
-$router->group(['middleware' => 'api'], function() use ($router) {
-    $router->group(['prefix' => 'carteira'], function () use ($router) {
-        $router->get('', 'CarteiraController@index');
-    });
+    Route::group(['middleware' => 'apiJwt'], function() {
+        Route::group(['prefix' => 'carteira'], function() {
+            Route::get('', 'CarteiraController@index');
+        });
 
-    $router->group(['prefix' => 'transacoes'], function () use ($router) {
-        $router->get('', 'TransacaoController@index');
-        $router->get('{id}', 'TransacaoController@show');
-        $router->post('', 'TransacaoController@realizarTransferencia');
+        Route::group(['prefix' => 'transacoes'], function() {
+            Route::get('', 'TransacaoController@index');
+            Route::get('', 'TransacaoController@show');
+            Route::get('', 'TransacaoController@realizarTransferencia');
+        });
     });
 });
+
 
