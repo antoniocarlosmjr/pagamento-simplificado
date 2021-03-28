@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Models\Carteira;
 use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\JsonResponse;
 use Tests\TestCase;
 
@@ -14,6 +15,8 @@ use Tests\TestCase;
  */
 class CarteiraTest extends TestCase
 {
+    use DatabaseTransactions;
+
     const SALDO_INICIAL_USUARIO = 50.00;
 
     /**

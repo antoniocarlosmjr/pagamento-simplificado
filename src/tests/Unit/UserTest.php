@@ -6,6 +6,7 @@ use App\Models\Carteira;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\JsonResponse;
 use Tests\TestCase;
 
@@ -16,6 +17,7 @@ use Tests\TestCase;
  */
 class UserTest extends TestCase
 {
+    use DatabaseTransactions;
 
     /**
      * Retorna um array com um usuário gerado através da fábrica.
@@ -32,7 +34,7 @@ class UserTest extends TestCase
             "email" => $usuario->email,
             "cpf_cnpj" => $usuario->cpf_cnpj,
             "tipo" => $usuario->tipo,
-            "password" => $usuario->password
+            "password" => '12345678'
         ];
     }
 
