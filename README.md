@@ -19,7 +19,7 @@ necessário que possua o Composer instalado em sua máquina.
 
 Em seguinda, é necessário saber que a configuração deste projeto foi criada utilizando o Docker, para isso é necessário 
 têlo instalado. Após a instalação, abra o diretório e execute `docker-compose up -d` para iniciar todos os contêineres,
-criar os volumes, configurar e conectar as redes:
+criar os volumes, configurar e conectar as redes.
 
 Logo após, execute `docker-compose exec app php artisan key:generate` para gerar uma chave que será copiada para o arquivo `.env` do projeto do Laravel
 para garantir que as sessões do usuário e os dados permaneçam seguros.
@@ -32,20 +32,17 @@ Obs.: Caso queira visualizar o ambiente de configuração do Docker, [clique aqu
 
 ### Testes
 
-Para a execução dos testes dessa aplicação sera necessário estar dentro do diretório `/src` e com o docker em execução
-só executar o seguinte comando:
+Para a execução dos testes dessa aplicação sera necessário estar dentro do diretório `/src` e com o Docker em execução utilize o seguinte comando:
 
 `docker-compose exec app php artisan test`
 
-O resultado esperado deve ser como exibe na imagem abaixo:
+O resultado esperado deve ser o exibido abaixo:
 
 ![Execucao_dos_testes](https://github.com/antoniocarlosmjr/pagamento-simplificado/blob/master/docs/execucao-testes.png?raw=true)
 
 ### Mapeamento Relacional
 
-A estrutura do banco de dados dessa aplicação foi organizada com a criação de três tabelas que representam 
-os usuários, as carteiras e as transações realizadas pelos usuários. A seguir, pode ser visto um diagrama que 
-representa tal estrutura.
+A estrutura do banco de dados dessa aplicação foi organizada com a criação de três tabelas: usuários, carteiras e transações. Os usuários possuem carteiras e realizam transferências que são armazenadas nas transações. A seguir, pode ser visto um diagrama que representa tal estrutura.
 
 ![Modelagem dos dados](https://github.com/antoniocarlosmjr/pagamento-simplificado/blob/master/docs/diagrama-banco.png?raw=true)
 
@@ -64,10 +61,10 @@ Por conta da virtualização por container, ele também possibilita um ambiente 
 
 ### Pontos de Melhorias
 
-- Criação de um versionamento da API, pois por enquanto não possui.
-- Uso do padrão de projeto Strategy para definir as estratégias de autorizações na realização das transferências, dado que por enquanto so possui
-um tipo e acessando um servico externo. 
-- Utilizar algum serviço de balanceamento de carga para tratar as realizaçoes de transferências. Serviços estes como o Redis, RabbitMQ ou outro;
+- Criação de um versionamento da API, pois por enquanto não possui;
+- Uso do padrão de projeto Strategy para definir as estratégias de autorizações na realização das transferências, dado que por enquanto só possui
+um tipo acessando um serviço externo;
+- Utilizar algum serviço de tratamento de filas para tratar as realizações de transferências. Serviços estes como o Redis, RabbitMQ ou outro;
 - Utilizar uma ferramenta de integração contínua (CI) para realizar os testes antes de buildar a aplicação;
 
 ### Referências e Documentações utilizadas
