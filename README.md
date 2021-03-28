@@ -32,13 +32,20 @@ Obs.: Caso queira visualizar o ambiente de configuração do Docker, [clique aqu
 
 ### Testes
 
-(Em breve)
+Para a execução dos testes dessa aplicação sera necessário estar dentro do diretório `/src` e com o docker em execução
+só executar o seguinte comando:
 
-- Testes de Funcionalidade (teste de feature) - [serve para testar as funcionalidades juntas]
-- Teste Unitários (serve para testar as classes)
-- Teste de API (usando o CodeException?)
+`docker-compose exec app php artisan test`
+
+O resultado esperado deve ser como exibe na imagem abaixo:
+
+![Execucao_dos_testes](https://github.com/antoniocarlosmjr/pagamento-simplificado/blob/master/docs/execucao-testes.png?raw=true)
 
 ### Mapeamento Relacional
+
+A estrutura do banco de dados dessa aplicação foi organizada com a criação de três tabelas que representam 
+os usuários, as carteiras e as transações realizadas pelos usuários. A seguir, pode ser visto um diagrama que 
+representa tal estrutura.
 
 ![Modelagem dos dados](https://github.com/antoniocarlosmjr/pagamento-simplificado/blob/master/docs/diagrama-banco.png?raw=true)
 
@@ -46,7 +53,24 @@ Obs.: Caso queira visualizar o ambiente de configuração do Docker, [clique aqu
 
 [Clique aqui para acessar a documentação da API](https://app.swaggerhub.com/apis-docs/carlos12antoni/PagamentoSimplificado/1.0.0)
 
-### Referências
+### Motivos de escolha das tecnologias
+
+Foi escolhido o framework Laravel pelo fato de existir uma vasta quantidade de funcionalidades já prontas para uso
+em APIs Restfull, além disso deixa o projeto bem estruturado em relação ao MVC. Também foi pensado no Slim, apesar de já
+ter usado, mas para o desafio ser maior foi escolhido o Laravel.
+
+A estrutura foi feita em Docker pelo fato de ser reutilizável em outros projetos e ser o mais escalável possível.
+Por conta da virtualização por container, ele também possibilita um ambiente leve e isolado para rodar a aplicação. 
+
+### Pontos de Melhorias
+
+- Criação de um versionamento da API, pois por enquanto não possui.
+- Uso do padrão de projeto Strategy para definir as estratégias de autorizações na realização das transferências, dado que por enquanto so possui
+um tipo e acessando um servico externo. 
+- Utilizar algum serviço de balanceamento de carga para tratar as realizaçoes de transferências. Serviços estes como o Redis, RabbitMQ ou outro;
+- Utilizar uma ferramenta de integração contínua (CI) para realizar os testes antes de buildar a aplicação;
+
+### Referências e Documentações utilizadas
 
 - [Docker](https://docs.docker.com/)
 - [Laravel](https://laravel.com/docs/8.x)
