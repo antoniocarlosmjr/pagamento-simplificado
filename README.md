@@ -36,7 +36,7 @@ Obs.: Caso queira visualizar o ambiente de configuração do Docker, [clique aqu
 
 ### Mapeamento Relacional
 
-(Em breve)
+![Modelagem dos dados](https://github.com/antoniocarlosmjr/pagamento-simplificado/blob/master/docs/diagrama-banco.png?raw=true)
 
 ### Documentação dos Endpoints
 
