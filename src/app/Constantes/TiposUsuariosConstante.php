@@ -38,4 +38,15 @@ class TiposUsuariosConstante implements ConstanteInterface
     {
         return json_encode(self::getArrayCombo());
     }
+
+    /**
+     * Retorna um array que representa somente os índices das constantes;
+     *
+     * @return array
+     * @author Antonio Martins
+     */
+    public static function getArraySomenteIds(): array
+    {
+        return [self::USUARIO_COMUM, self::USUARIO_LOJISTA];
+    }
 }
