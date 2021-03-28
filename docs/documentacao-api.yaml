@@ -1,0 +1,331 @@
+openapi: 3.0.0
+servers:
+  - description: Ambiente de Desenvolvimento
+    url: https://localhost:8008
+info:
+  description: Esta documentação exibe os endpoints necessários para utilizar API do pagamento simplificdo com foco em transações financeiras.
+  version: "1.0.0"
+  title: Pagamento Simplificado
+tags:
+  - name: Autenticação
+    description: "Endpoint de autenticação"
+  - name: Usuário
+    description: "Endpoint relacionado ao usuário"
+  - name: Carteira
+    description: "Endpoint relacionado a carteira do usuário"
+  - name: Transações
+    description: "Endpoint relacionado as transações do usuário"
+paths:
+  "/login":
+    post:
+      tags:
+        - Autenticação
+      summary: "Realizar login do usuário"
+      description: "Realizar login do usuário e gera o token com validade de 1 hora"
+      operationId: auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthRequest"
+        required: true
+      responses:
+        "200":
+          description: "Login válido"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: "Email ou senha incorretos!"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Não Autorizado"
+
+        "422":
+          description: "Usuário ou senha não informados"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    example: "O email é obrigatório"
+                  password:
+                    type: string
+                    example: "O password é obrigatório"
+  "/usuario":
+    post:
+      tags:
+        - Usuário
+      summary: "Realiza o cadastro de um usuário do tipo comum ou lojista"
+      description: "Este endpoint realiza o cadastro de um novo usuário do tipo lojista ou comum. Usuários do tipo comum realizam transferência para qualquer usuário, exceto ele mesmo. Já usuários do tipo lojista apenas recebe transferencia. Não é necessário token para realizar o cadastro do usuário. A partir do momento que o usuário é cadastrado, a carteira dele também é gerada. Além disso, usuários do tipo "
+      operationId: usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CadastroUsuario"
+        required: true
+      responses:
+        "201":
+          description: "Usuário cadastrado com sucesso"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                    example: "Usuário cadastrado com sucesso"
+        "422":
+          description: "Erro de validação em algum campo não informado ou validação de email, CPF/CNPJ ou nome não está completo."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Erro ao cadastrar usuário"
+  "/carteira":
+    get:
+      tags:
+        - Carteira
+      summary: "Retorna os dados da carteira do cliente logado"
+      description: "Este endpoint retorna os dados da carteira do cliente logado. É necessário de autenticação com token."
+      operationId: configuracao
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: "Informações da carteira do usuário logado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carteira"
+        "422":
+          description: "Possível erro interno ao retornar carteira"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Erro interno ao retornar carteira"
+  "/transacao":
+    get:
+      tags:
+        - Transações
+      summary: "Retorna todas as transferências que o usuário realizou"
+      description: "Este endpoint retorna as transações que o usuário realizou. É necessário de autenticação com token."
+      operationId: transacoes
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: "Transferências realizadas pelo usuário logado"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transacoes"
+        "422":
+          description: "Possível erro interno ao retornar transações do usuário"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Erro interno ao retornar transações do usuário"
+    post:
+      tags:
+        - Transações
+      summary: "Realiza uma transferência para um usuário comum ou lojista"
+      description: "Este endpoint realiza a transferência de um determinado valor para outro usuário que pode ser do tipo lojista ou comum."
+      operationId: cadastroTransacao
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Transferencia"
+        required: true
+      responses:
+        "200":
+          description: "Transferência realizada com sucesso"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                    example: "Transferência realizada com sucesso"
+        "422":
+          description: "Erro de validação em algum campo não informado ou regra de negócio, como: saldo na carteira do usuário pagador é insuficiente, id do usuário beneficiário igual ao id do pagador, etc."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erro ao tentar realizar transferência"
+components:
+  schemas:
+    AuthRequest:
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          description: "Email do usuário"
+          example: "teste@email.com"
+          type: string
+        password:
+          type: string
+          example: "12345678"
+          description: "Senha do usuário"
+    AuthResponse:
+      required:
+        - access_token
+        - token_type
+        - expires_in
+      type: object
+      properties:
+        access_token:
+          description: "JWT de para autenticação"
+          example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvcmVsYWNpb25hci5jb25zdHJ1dG9yZGV2ZW5kYXMuY29tLmJyIiwic3ViIjoiOTU3OSIsImlhdCI6MTYwOTc4MDMwMSwibmJmIjoxNjA5NzgwMzAxLCJleHAiOjE2MDk3ODM5MDF9.Snlcld9eG-3tp5yeexNPNe2liQcKa789Btqf-RWwY7LmJyQVhO6WriNjZg-ryEkh2DzEzYHcrpsC4OfpYNWm7MY4nN6hPmFWdMKTsrZdes1g6T-IlYi65xHOfg24mD_KSdBzJ1ED_9MtjqocBBWYbOu3MvC4BGslpR2DI9FjA3c"
+          type: string
+        token_type:
+          type: string
+          description: "Tipo da autenticação"
+          example: "bearer"
+        expires_in:
+          type: integer
+          description: "Tempo em segundos de validade do token"
+          example: 3600
+    CadastroUsuario:
+      required:
+        - nome
+        - email
+        - password
+        - cpf_cnpj
+        - tipo
+      type: object
+      properties:
+        nome:
+          type: string
+          description: "Nome completo do usuário"
+          example: "Maria da Silva"
+        email:
+          type: string
+          description: "Email do usuário"
+          example: "email@email.com"
+        password:
+          type: string
+          example: "12345678"
+          description: "Senha do usuário"
+        cpf_cnpj:
+          type: string
+          description: "CPF ou CNPJ do usuário (sem máscara)"
+          example: "1234567890"
+        tipo:
+          type: string
+          description: "Tipo do usuário que pode ser 'lojista' ou 'comum'"
+          example: "comum"
+    Carteira:
+      type: object
+      properties:
+        id:
+          example: 12
+          type: integer
+          description: "Id da carteira"
+        saldo:
+          example: "50.00"
+          type: string
+          description: "Saldo do usuário na carteira"
+        created_at:
+          example: "2021-03-27T23:53:05.000000Z"
+          type: string
+          description: "Data de cadastro da carteira"
+        updated_at:
+          example: "2021-03-27T23:53:05.000000Z"
+          type: string
+          description: "Data de atualização da carteira"
+        deleted_at:
+          example: null
+          type: string
+          description: "Data de remoção da carteira"
+    Transacoes:
+      type: object
+      properties:
+        id:
+          example: 1
+          type: integer
+          description: "Id da transação"
+        valor:
+          example: "10.00"
+          type: string
+          description: "Valor realizado na transferência"
+        id_usuario_pagador:
+          type: integer
+          example: 2
+          description: "Id do usuário pagador, ou seja, o usuário logado"
+        situacao:
+          example: "finalizada"
+          type: string
+          description: "Situação da transação que pode ser: finalizada, pendente ou cancelada"
+        id_usuario_beneficiario:
+          type: integer
+          example: 2
+          description: "Id do usuário que recebeu a transferência"
+        created_at:
+          example: "2021-03-27T23:53:05.000000Z"
+          type: string
+          description: "Data de cadastro da transação"
+        updated_at:
+          example: "2021-03-27T23:53:05.000000Z"
+          type: string
+          description: "Data de atualização da transação"
+        deleted_at:
+          example: null
+          type: string
+          description: "Data de remoção da transação"
+    Transferencia:
+      required:
+        - id_usuario_pagador
+        - id_usuario_beneficiario
+        - valor
+      type: object
+      properties:
+        id_usuario_pagador:
+          type: integer
+          description: "Id do usuário pagador, ou seja, o que está realizando a transferência"
+          example: 6
+        id_usuario_beneficiario:
+          type: integer
+          description: "Id do usuário beneficiário"
+          example: 2
+        valor:
+          type: number
+          example: 30.00
+          description: "Valor para a transferência"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

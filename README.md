@@ -40,7 +40,7 @@ Obs.: Caso queira visualizar o ambiente de configuração do Docker, [clique aqu
 
 ### Documentação dos Endpoints
 
-(Em breve - Swagger)
+[Clique aqui para acessar a documentação da API](https://app.swaggerhub.com/apis-docs/carlos12antoni/PagamentoSimplificado/1.0.0)
 
 ### Referências
 
