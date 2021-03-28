@@ -34,6 +34,10 @@ Obs.: Caso queira visualizar o ambiente de configuração do Docker, [clique aqu
 
 (Em breve)
 
+- Testes de Funcionalidade (teste de feature) - [serve para testar as funcionalidades juntas]
+- Teste Unitários (serve para testar as classes)
+- Teste de API (usando o CodeException?)
+
 ### Mapeamento Relacional
 
 ![Modelagem dos dados](https://github.com/antoniocarlosmjr/pagamento-simplificado/blob/master/docs/diagrama-banco.png?raw=true)
