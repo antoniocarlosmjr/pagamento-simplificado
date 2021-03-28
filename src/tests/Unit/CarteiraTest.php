@@ -2,6 +2,8 @@
 
 namespace Tests\Unit;
 
+use App\Models\Carteira;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Tests\TestCase;
 
@@ -12,8 +14,38 @@ use Tests\TestCase;
  */
 class CarteiraTest extends TestCase
 {
+    const SALDO_INICIAL_USUARIO = 50.00;
+
     /**
-     * Testa o retorno de uma determinada carteira do usuário.
+     * Retorna o token de um determinado usuário que acaba de ser cadastrado.
+     *
+     * @return string
+     * @author Antonio Martins
+     */
+    public function retornarTokenUsuario(): string
+    {
+        $usuarioCadastrado = User::factory()->create();
+        $usuarioCadastrado->each(
+            fn (User $user) => Carteira::factory(
+                [
+                    'id_usuario' => $user->id,
+                    'saldo' => self::SALDO_INICIAL_USUARIO
+                ]
+            )->create()
+        );
+
+        $dados = [
+            'email' => $usuarioCadastrado->email,
+            'password' => '12345678'
+        ];
+
+        $response = $this->post('api/login', $dados);
+        return $response->json('access_token');
+    }
+
+    /**
+     * Testa o retorno de uma determinada carteira do usuário com saldo
+     * definido na constante como saldo inicial.
      *
      * @return void
      * @author Antonio Martins
@@ -21,7 +53,24 @@ class CarteiraTest extends TestCase
      */
     public function testRetornoCarteira()
     {
+        $response = $this->json(
+            'GET',
+            'api/carteira', [],
+            ['Authorization' => "Bearer {$this->retornarTokenUsuario()}"]);
 
+        $this->assertEquals(JsonResponse::HTTP_OK, $response->status());
+        $this->assertEquals(self::SALDO_INICIAL_USUARIO, $response->json('saldo'));
+        $response->assertJsonStructure(
+            [
+                'id',
+                'saldo',
+                'id_usuario',
+                'created_at',
+                'updated_at',
+                'deleted_at'
+            ],
+            $response->json()
+        );
     }
 
     /**
