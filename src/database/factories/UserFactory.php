@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Provider\pt_BR\Person;
 use Faker\Provider\pt_BR\Company;
 use Illuminate\Support\Arr;
-use Faker\Generator as Faker;
 
 /**
  * Class UserFactory
@@ -46,7 +45,7 @@ class UserFactory extends Factory
         return [
             'nome' => $nomeUsuario,
             'email' => $this->faker->unique()->safeEmail,
-            'password' => '12345678',
+            'password' => bcrypt('12345678'),
             'cpf_cnpj' => $documentoUsuario,
             'tipo' => $tipoUsuario
         ];
