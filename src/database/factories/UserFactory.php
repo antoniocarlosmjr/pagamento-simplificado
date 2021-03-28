@@ -6,6 +6,7 @@ use App\Constantes\TiposUsuariosConstante;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Provider\pt_BR\Person;
+use Faker\Provider\pt_BR\Company;
 
 /**
  * Class UserFactory
@@ -28,20 +29,23 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        $fakerBr = new Person($this->faker);
+        $fakeBrPerson = new Person($this->faker);
+        $fakeBrCompany = new Company($this->faker);
 
+        $tipoUsuario = $this->faker->randomElement(TiposUsuariosConstante::getArrayCombo());
+        $documentoUsuario = $tipoUsuario['id'] == TiposUsuariosConstante::USUARIO_COMUM
+            ? $fakeBrPerson->cpf(false)
+            : $fakeBrCompany->cnpj(false);
+        $nomeUsuario = $tipoUsuario['id'] == TiposUsuariosConstante::USUARIO_COMUM
+            ? "{$fakeBrPerson->firstName()} {$fakeBrPerson->lastName()}"
+            : $fakeBrCompany->company();
 
         return [
-            'nome' => "{$this->faker->firstName} {$this->faker->lastName}",
+            'nome' => $nomeUsuario,
             'email' => $this->faker->unique()->safeEmail,
-            'password' => $this->faker->password(),
-            'cpf_cnpj' => $fakerBr->cpf(false),
-            'tipo' => $this->faker->randomElement(
-                [
-                    TiposUsuariosConstante::USUARIO_COMUM,
-                    TiposUsuariosConstante::USUARIO_LOJISTA
-                ]
-            )
+            'password' => bcrypt('12345678'),
+            'cpf_cnpj' => $documentoUsuario,
+            'tipo' => $tipoUsuario['id']
         ];
     }
 }
