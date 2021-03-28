@@ -45,5 +45,7 @@ Obs.: Caso queira visualizar o ambiente de configuração do Docker, [clique aqu
 ### Referências
 
 - [Docker](https://docs.docker.com/)
-- [Laravel](https:://laravel.com/docs)
-- [Github Laravel v.8](https:://laravel.com/docs)
+- [Laravel](https://laravel.com/docs/8.x)
+- [Github Laravel v.8](https://github.com/laravel/laravel)
+- [JWT](https://jwt.io/)
+- [JWT-Laravel](https://jwt-auth.readthedocs.io/en/develop/)
