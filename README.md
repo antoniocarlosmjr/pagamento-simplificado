@@ -1,6 +1,6 @@
 # Pagamento Simplificado
 
-API RESTFul para realizar transações de pagamento.
+API RESTFul para realizar transações de pagamento entre usuários comuns e lojistas.
 
 #### Tecnologias Utilizadas
 
