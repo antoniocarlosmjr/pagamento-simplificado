@@ -65,7 +65,7 @@ class Transacao extends Model
             'id_usuario_pagador.exists' => 'Usuário pagador é inexistente na base de dados.',
             'id_usuario_pagador.numeric' => 'Id do usuário pagador deve ser um número.',
             'id_usuario_beneficiario.required' => 'Id do usuário beneficiário é obrigatório.',
-            'id_usuario_beneficiario.exists' => 'Id do usuário beneficiário inexistente na base de dados.',
+            'id_usuario_beneficiario.exists' => 'Usuário beneficiário inexistente na base de dados.',
             'id_usuario_beneficiario.numeric' => 'Id do usuário beneficiário deve ser um número.',
             'valor.required' => "O valor da transferência é obrigatório.",
             'valor.not_in' => 'O valor da transferência deve ser maior que zero.',
