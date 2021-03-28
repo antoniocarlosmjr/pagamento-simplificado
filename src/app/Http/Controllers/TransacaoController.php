@@ -92,9 +92,7 @@ class TransacaoController extends GenericoController
     {
         try {
             $idUsuarioLogado = Auth::user()->id;
-            $dados = $this->model
-                ->where('id_usuario_pagador', '=', $idUsuarioLogado)
-                ->where('deleted_at', '=', null);
+            $dados = $this->model->where('id_usuario_pagador', '=', $idUsuarioLogado)->get();
 
             return response()->json($dados);
         } catch (Exception $e) {

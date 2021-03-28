@@ -78,7 +78,7 @@ class Carteira extends Model
             return $this->create($dados);
         } catch (Exception $e) {
             throw new CarteiraException(
-                'Erro ao tentar cadastrar a reserva',
+                'Erro ao tentar cadastrar a carteira',
                 JsonResponse::HTTP_UNPROCESSABLE_ENTITY
             );
         }
