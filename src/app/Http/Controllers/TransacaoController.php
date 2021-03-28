@@ -55,12 +55,13 @@ class TransacaoController extends GenericoController
             );
 
             $this->model->create($request->all());
-
             event(new TransferenciaRecebida($usuarioBeneficiarioModel));
-
             DB::commit();
 
-            return response()->json(['success' => 'Transferência realizada com sucesso!']);
+            return response()->json(
+                ['success' => 'Transferência realizada com sucesso!'],
+            JsonResponse::HTTP_CREATED
+            );
         }  catch (TransacaoException $error) {
             DB::rollBack();
             return response()->json(
