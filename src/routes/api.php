@@ -18,10 +18,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function() {
     Route::post('login', 'AuthController@login');
 
     Route::group(['middleware' => ['apiJwt']], function() {
-        Route::get('carteira', 'CarteiraController@retornarTodos');
-        Route::get('carteira/{id}', 'CarteiraController@retornarPorId');
-        Route::post('carteira/{id}', 'CarteiraController@atualizar');
+        Route::get('carteira', 'CarteiraController@retornarCarteiraPorUsuario');
         Route::post('transacao', 'TransacaoController@realizarTransferencia');
+        Route::get('transacao', 'TransacaoController@retornarTransacoesPorUsuario');
     });
 });
 
