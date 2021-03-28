@@ -85,7 +85,7 @@ class User extends Authenticatable implements JWTSubject
             'email.unique' => 'Já existe um usuário com este email.',
             'cpf_cnpj.unique' => 'Já existe um usuário com este CPF/CNPJ.',
             'email.email' => 'Email informado não é válido.',
-            'tipo.in' => "Tipo de usuário deve ser 'comum' ou 'logista'.",
+            'tipo.in' => "Tipo de usuário deve ser 'comum' ou 'lojista'.",
             'cpf_cnpj.in' => 'CPF/CNPJ informado não é valido.',
             'password.min' => 'A senha deve ter no mínimo 8 e no máximo 20 caracteres.',
             'password.max' => 'A senha deve ter no mínimo 8 e no máximo 20 caracteres.',
