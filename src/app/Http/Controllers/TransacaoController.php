@@ -6,8 +6,10 @@ use App\Exceptions\TransacaoException;
 use App\Models\Transacao;
 use App\Models\User;
 use App\Events\TransferenciaRecebida;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -77,6 +79,28 @@ class TransacaoController extends GenericoController
                 ],
                 JsonResponse::HTTP_UNPROCESSABLE_ENTITY
             );
+        }
+    }
+
+    /**
+     * Retorna em formato json as transações realizadas por ele.
+     *
+     * @return JsonResponse
+     * @author Antonio Martins
+     */
+    public function retornarTransacoesPorUsuario(): JsonResponse
+    {
+        try {
+            $idUsuarioLogado = Auth::user()->id;
+            $dados = $this->model
+                ->where('id_usuario_pagador', '=', $idUsuarioLogado)
+                ->where('deleted_at', '=', null);
+
+            return response()->json($dados);
+        } catch (Exception $e) {
+            return response()->json(
+                ['error' => 'Erro interno ao retornar transações do usuário'],
+                JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 }

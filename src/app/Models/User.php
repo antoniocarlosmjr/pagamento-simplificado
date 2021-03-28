@@ -104,7 +104,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Returna um array de valores contendo qualquer declaração personalizada do JWT.
+     * Retorna um array de valores contendo qualquer declaração personalizada do JWT.
      *
      * @return array
      * @author Antonio Martins
