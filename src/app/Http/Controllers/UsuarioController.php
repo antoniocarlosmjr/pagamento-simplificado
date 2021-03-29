@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\CarteiraException;
 use App\Models\Carteira;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -54,6 +55,15 @@ class UsuarioController extends GenericoController
             return response()->json(
                 ['success' => 'Usuário cadastrado com sucesso!'],
                 JsonResponse::HTTP_CREATED
+            );
+        } catch (CarteiraException $error) {
+            DB::rollBack();
+            return response()->json(
+                [
+                    'message' => "Erro ao cadastrar usuário",
+                    'errors' => $error->getMessage()
+                ],
+                JsonResponse::HTTP_UNPROCESSABLE_ENTITY
             );
         } catch (Throwable $error){
             DB::rollBack();
