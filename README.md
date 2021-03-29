@@ -22,7 +22,8 @@ têlo instalado. Após a instalação, abra o diretório e execute `docker-compo
 criar os volumes, configurar e conectar as redes.
 
 Logo após, execute `docker-compose exec app php artisan key:generate` para gerar uma chave que será copiada para o arquivo `.env` do projeto do Laravel
-para garantir que as sessões do usuário e os dados permaneçam seguros.
+para garantir que as sessões do usuário e os dados permaneçam seguros. Além disso, utilize o comando `docker-compose exec app php artisan jwt:generate`
+para gerar a chave do JWT utilizado nas autenticações da APIs.
 
 Por fim, execute o comando `docker-compose exec app php artisan migrate` para executar as migrações.
 
